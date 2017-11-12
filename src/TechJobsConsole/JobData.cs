@@ -48,8 +48,10 @@ namespace TechJobsConsole
             foreach (Dictionary<string, string> row in AllJobs)
             {
                 string aValue = row[column];
+                string aValueLower = aValue.ToLower();
+                string valueLower = value.ToLower();
 
-                if (aValue.Contains(value))
+                if (aValueLower.Contains(valueLower))
                 {
                     jobs.Add(row);
                 }
@@ -57,6 +59,46 @@ namespace TechJobsConsole
 
             return jobs;
         }
+
+        public static List<Dictionary<string, string>> FindByValue(string value)
+        {
+            LoadData();
+
+            List<Dictionary<string, string>> jobs = new List<Dictionary<string, string>>();
+
+            foreach (Dictionary<string, string> row in AllJobs)
+            {
+                if (row.ContainsValue(value))
+                {
+                    jobs.Add(row);
+                }
+                else
+                {
+                    foreach (KeyValuePair<string, string> pair in row)
+                    {
+                        string key = pair.Key;
+                        string valuefrom = pair.Value;
+                        string valuefromlower = valuefrom.ToLower();
+                        string valuelower = value.ToLower();
+                        if (valuefromlower.Contains(valuelower)) 
+                        {
+                            if (jobs.Contains(row))
+                            {
+                                ;
+                            }
+                            else
+                            {
+                                jobs.Add(row);
+                            }  
+                            
+                        }
+                    }
+                }
+            }
+
+            return jobs;
+        }
+
 
         /*
          * Load and parse data from job_data.csv
